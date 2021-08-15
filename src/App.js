@@ -75,20 +75,20 @@ function App() {
 
   const editProduct = (editProduct) => {
     //setShowLoader(true)
-    setSingleProduct( editProduct )
+    setSingleProduct(editProduct)
     //setProductId(id)
-    
+
     history.push('/product-edit/' + editProduct.id)
     console.log(editProduct, '====productId')
 
 
   }
-  console.log(singleProduct,'===edit')
+  console.log(singleProduct, '===edit')
 
-  const toggleLoader=(visible)=>{
-    console.log(visible,'===toggle')
-    //setShowLoader(true)
-    //  visible?setShowLoader(true):setShowLoader(false)
+  const toggleLoader = (visible) => {
+    console.log(visible, '===toggle')
+    setShowLoader(true)
+    visible ? setShowLoader(true) : setShowLoader(false)
   }
   //console.log(history)
   const showListPage = () => {
@@ -118,7 +118,7 @@ function App() {
   //   { id: 9, prodName: 'Mobile', price: 300, description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit,' },
 
   // ]);
-
+  //console.log(showLoader);
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -139,59 +139,59 @@ function App() {
         </Toolbar>
       </AppBar>
 
-      {
-        <Switch>
-          <Route exact path='/'>
-            {
-              showLoader === true ?
-                <div style={{ top: '50%' }, { left: '50%' }, { position: 'absolute' }}>
-                  <img src={gear} />
-                </div> :
 
-                <ProductList classes={classes} toggleLoader={toggleLoader} selectProduct={selectProduct} />
-              // <ProductListFn products={productList} selectProduct={selectProduct} />
-            }
-          </Route>
-          <Route exact path='/product-list' render={() => <Redirect exact to='/' />} />
+      <Switch>
+        <Route exact path='/'>
+          {
+            showLoader ?
+              <div style={{ top: '50%' }, { left: '50%' }, { position: 'absolute' }}>
+                <img src={gear} />
+              </div> :
 
-          <Route exact path='/product-details/:id'>
-            {
-              showLoader === true ?
-                <div style={{ top: '50%' }, { left: '50%' }, { position: 'absolute' }}>
-                  <img src={gear} />
-                </div> :
-                <ProductDetails classes={classes} editProduct={editProduct} />
-              // <ProductDetailsFn products={productList} showListPage={showListPage} />
-            }
-          </Route>
+              <ProductList classes={classes} toggleLoader={toggleLoader} selectProduct={selectProduct} />
+            // <ProductListFn products={productList} selectProduct={selectProduct} />
+          }
+        </Route>
+        <Route exact path='/product-list' render={() => <Redirect exact to='/' />} />
 
-          <Route exact path='/product-edit/:id'>
-            {
-              showLoader === true ?
-                <div style={{ top: '50%' }, { left: '50%' }, { position: 'absolute' }}>
-                  <img src={gear} />
-                </div> :
-               <ProductCreate classes={classes} selectProduct={singleProduct} />
-              // <ProductDetailsFn products={productList} showListPage={showListPage} />
-            }
-          </Route>
+        <Route exact path='/product-details/:id'>
+          {
+            showLoader === true ?
+              <div style={{ top: '50%' }, { left: '50%' }, { position: 'absolute' }}>
+                <img src={gear} />
+              </div> :
+              <ProductDetails classes={classes} editProduct={editProduct} />
+            // <ProductDetailsFn products={productList} showListPage={showListPage} />
+          }
+        </Route>
 
-          <Route exact path='/create-product'>
-            {
-              showLoader === true ?
-                <div style={{ top: '50%' }, { left: '50%' }, { position: 'absolute' }}>
-                  <img src={gear} />
-                </div> :
-                <ProductCreate classes={classes} />
-              // <ProductDetailsFn products={productList} showListPage={showListPage} />
-            }
-          </Route>
+        <Route exact path='/product-edit/:id'>
+          {
+            showLoader === true ?
+              <div style={{ top: '50%' }, { left: '50%' }, { position: 'absolute' }}>
+                <img src={gear} />
+              </div> :
+              <ProductCreate classes={classes} selectProduct={singleProduct} />
+            // <ProductDetailsFn products={productList} showListPage={showListPage} />
+          }
+        </Route>
 
-          <Route path='*'>
-            <p>404 Not Found</p>
-          </Route>
-        </Switch>
-      }
+        <Route exact path='/create-product'>
+          {
+            showLoader === true ?
+              <div style={{ top: '50%' }, { left: '50%' }, { position: 'absolute' }}>
+                <img src={gear} />
+              </div> :
+              <ProductCreate classes={classes} />
+            // <ProductDetailsFn products={productList} showListPage={showListPage} />
+          }
+        </Route>
+
+        <Route path='*'>
+          <p>404 Not Found</p>
+        </Route>
+      </Switch>
+
       {/* */}
 
     </div>

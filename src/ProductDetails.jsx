@@ -22,14 +22,19 @@ import Grid from '@material-ui/core/Grid';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import axios from 'axios';
+import { useDispatch,useSelector } from 'react-redux';
+import {setCurrentProductAction } from './store/currentProductAction'
 
 
 const ProductDetails = ({ classes,editProduct }) => {
 
-    const [singleProduct,setSingleProduct]=useState({});
+    //const [singleProduct,setSingleProduct]=useState({});
     const params= useParams();
     const history=useHistory();
-    console.log(params.id, '===param.id')
+    const dispatch=useDispatch();
+    const currentProduct=useSelector((store)=>store)
+    //console.log(params.id, '===param.id')
+    console.log(currentProduct, '===selector')
    
     const gridClick=()=>{
         console.log('grid clicked')
@@ -39,12 +44,13 @@ const ProductDetails = ({ classes,editProduct }) => {
         axios.get('https://fakestoreapi.com/products/'+params.id).then(
             response => {
               console.log(response.data, '===response single    ')
-              setSingleProduct(response.data)
+              //setSingleProduct(response.data)
+              dispatch(setCurrentProductAction(response.data))
               //toggleLoader(false);
             }).catch(
             );
     },[])
-    console.log(singleProduct,'===singleProduct')
+    console.log(currentProduct.currentProduct,'===singleProduct')
 
     const deleteProduct = (id) => {
         axios({
@@ -84,23 +90,23 @@ const ProductDetails = ({ classes,editProduct }) => {
                                     component="img"
                                     alt="Contemplative Reptile"
                                     height="140"
-                                    image={singleProduct.image}
+                                    image={currentProduct.currentProduct?.image}
                                     title="Contemplative Reptile"
                                 />
                                 <CardContent>
                                     <Typography gutterBottom variant="h5" component="h2">
-                                      {singleProduct.title}
+                                      {currentProduct.currentProduct?.title}
                                     </Typography>
                                     <Typography variant="body2" color="textSecondary" component="p">
-                                        {singleProduct.description}
+                                        {currentProduct.currentProduct?.description}
                                     </Typography>
                                 </CardContent>
                             </CardActionArea>
                             <CardActions>
-                                <Button size="small" color="success" onClick={()=>editProduct(singleProduct)}>
+                                <Button size="small" color="success" onClick={()=>editProduct(currentProduct.currentProduct)}>
                                     Edit
                                 </Button>
-                                <Button size="small" color="danger" onClick={()=>deleteProduct(singleProduct.id)} >
+                                <Button size="small" color="danger" onClick={()=>deleteProduct(currentProduct.currentProduct?.id)} >
                                    Delete
                                 </Button>
                             </CardActions>
