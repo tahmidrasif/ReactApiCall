@@ -23,7 +23,7 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import axios from 'axios';
 import { useDispatch,useSelector } from 'react-redux';
-import {setCurrentProductAction } from './store/currentProductAction'
+import {productDetailsAction,requestProdctDetails } from './store/action/productDetailsAction'
 
 
 const ProductDetails = ({ classes,editProduct }) => {
@@ -32,25 +32,27 @@ const ProductDetails = ({ classes,editProduct }) => {
     const params= useParams();
     const history=useHistory();
     const dispatch=useDispatch();
-    const currentProduct=useSelector((store)=>store)
+    const {currentProduct}=useSelector((store)=>store.productDetailsReducer)
     //console.log(params.id, '===param.id')
-    console.log(currentProduct, '===selector')
+   
    
     const gridClick=()=>{
         console.log('grid clicked')
     }
 
     useEffect(()=>{
-        axios.get('https://fakestoreapi.com/products/'+params.id).then(
-            response => {
-              console.log(response.data, '===response single    ')
-              //setSingleProduct(response.data)
-              dispatch(setCurrentProductAction(response.data))
-              //toggleLoader(false);
-            }).catch(
-            );
-    },[])
-    console.log(currentProduct.currentProduct,'===singleProduct')
+        dispatch(requestProdctDetails(params.id))
+        // axios.get('https://fakestoreapi.com/products/'+params.id).then(
+        //     response => {
+        //       console.log(response.data, '===response single    ')
+        //       //setSingleProduct(response.data)
+        //       dispatch(productDetailsAction(response.data))
+        //       //toggleLoader(false);
+        //     }).catch(
+        //     );
+    },[currentProduct])
+
+    console.log(currentProduct, '===selector')
 
     const deleteProduct = (id) => {
         axios({
@@ -90,23 +92,23 @@ const ProductDetails = ({ classes,editProduct }) => {
                                     component="img"
                                     alt="Contemplative Reptile"
                                     height="140"
-                                    image={currentProduct.currentProduct?.image}
+                                    image={currentProduct?.image}
                                     title="Contemplative Reptile"
                                 />
                                 <CardContent>
                                     <Typography gutterBottom variant="h5" component="h2">
-                                      {currentProduct.currentProduct?.title}
+                                      {currentProduct?.title}
                                     </Typography>
                                     <Typography variant="body2" color="textSecondary" component="p">
-                                        {currentProduct.currentProduct?.description}
+                                        {currentProduct?.description}
                                     </Typography>
                                 </CardContent>
                             </CardActionArea>
                             <CardActions>
-                                <Button size="small" color="success" onClick={()=>editProduct(currentProduct.currentProduct)}>
+                                <Button size="small" color="success" onClick={()=>editProduct(currentProduct)}>
                                     Edit
                                 </Button>
-                                <Button size="small" color="danger" onClick={()=>deleteProduct(currentProduct.currentProduct?.id)} >
+                                <Button size="small" color="danger" onClick={()=>deleteProduct(currentProduct?.id)} >
                                    Delete
                                 </Button>
                             </CardActions>

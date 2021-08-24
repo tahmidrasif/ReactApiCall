@@ -24,7 +24,7 @@ import axios from 'axios';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { useDispatch,useSelector } from 'react-redux';
-import { setProductListAction } from './store/action';
+import { productListAction,requestProductList } from './store/action/productListAction';
 
 
 
@@ -36,30 +36,31 @@ const ProductList = ({ classes, selectProduct, toggleLoader }) => {
   }
 
   const dispatch=useDispatch();
-  const reduxStore=useSelector((store)=>store);
-  console.log(reduxStore,'===reduxstore')
+  const {productList}=useSelector((store)=>store.productListReducer);
+  console.log(productList,'===reduxstore')
   //const [productList, setProductList] = useState([]);
   useEffect(() => {
-    if (!reduxStore.productList.length) {
+    if (!productList.length) {
       console.log('in productlist.js useeffect')
+      dispatch(requestProductList())
      // toggleLoader(true);
-      axios.get('https://fakestoreapi.com/products').then(
-        response => {
-          console.log(response.data, '===response')
-          //setProductList(response.data)
-          dispatch(setProductListAction(response.data))
-          //toggleLoader(false);
-        }).catch(
-        );
+      // axios.get('https://fakestoreapi.com/products').then(
+      //   response => {
+      //     console.log(response.data, '===response')
+      //     //setProductList(response.data)
+      //     dispatch(productListAction(response.data))
+      //     //toggleLoader(false);
+      //   }).catch(
+      //   );
     }
 
-  }, []);
+  }, [dispatch]);
 
   return (
 
     <Grid container spacing={3}>
 
-      {reduxStore.productList.map((item, index) => (
+      {productList.map((item, index) => (
 
         <Grid item xs={4} onClick={(() => selectProduct(item.id))}>
           <Paper className={classes.paper}>

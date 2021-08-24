@@ -1,6 +1,8 @@
+import { ActionType } from "./actionTypes"
+
 export const setCurrentProductAction=(product)=>{
     return{
-        type:'update_current_product',
+        type:ActionType.UPDATE_CURRENT_PRODUCT,
         payload:product
     }
 }
